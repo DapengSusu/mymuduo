@@ -18,7 +18,7 @@ class Poller : noncopyable
 public:
     using ChannelList = std::vector<Channel*>;
 
-    Poller(EventLoop* loop) : ownerLoop_(loop) {}
+    explicit Poller(EventLoop* loop) : ownerLoop_(loop) {}
     virtual ~Poller() = default;
 
     // 给所有IO复用保留统一的接口

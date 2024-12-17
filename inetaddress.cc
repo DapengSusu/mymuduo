@@ -5,7 +5,7 @@
 
 InetAddress::InetAddress(uint16_t port, std::string ip)
 {
-    bzero(&addr_, sizeof addr_);
+    memset(&addr_, 0, sizeof addr_);
 
     addr_.sin_family = AF_INET;
     addr_.sin_port = htons(port);
