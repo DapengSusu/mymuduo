@@ -5,9 +5,6 @@ project(mymuduo VERSION 0.0.1)
 # 设置so库生成在项目目录的lib文件夹下
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 
-# 设置可执行文件生成在项目目录的bin文件夹下
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
-
 # 配置编译，使用c++11标准
 # -fPIC：编译器编译时启用位置无关代码的特性，建议在编译动态链接库时始终使用-fPIC编译参数
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fPIC")
@@ -25,7 +22,3 @@ aux_source_directory(. SRC_LIST)
 
 # mymuduo最终编译成so动态库
 add_library(mymuduo SHARED ${SRC_LIST})
-
-# 测试
-add_executable(test_timestamp ./test/test_timestamp.cc ${SRC_LIST})
-add_executable(test_inetaddress ./test/test_inetaddress.cc ${SRC_LIST})
