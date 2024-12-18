@@ -9,7 +9,12 @@ const int Channel::kReadEvent = EPOLLIN | EPOLLPRI;
 const int Channel::kWriteEvent = EPOLLOUT;
 
 Channel::Channel(EventLoop *loop, int fd)
-    : loop_(loop), fd_(fd), events_(0), revents_(0), index_(-1), tied_(false)
+    : loop_(loop)
+    , fd_(fd)
+    , events_(0)
+    , revents_(0)
+    , index_(-1)
+    , tied_(false)
 {
 }
 
@@ -27,15 +32,13 @@ void Channel::tie(const std::shared_ptr<void>& obj)
 void Channel::update()
 {
     // 在channel所属的EventLoop中，调用poller的方法，注册fd的events事件
-    //TODO
-    // loop_->updateChannel(this);
+    loop_->updateChannel(this);
 }
 
 void Channel::remove()
 {
     // 在channel所属的EventLoop中，删除当前channel
-    //TODO
-    // loop_->removeChannel(this);
+    loop_->removeChannel(this);
 }
 
 void Channel::handleEvent(Timestamp receiveTime)
