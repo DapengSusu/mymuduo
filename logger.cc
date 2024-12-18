@@ -29,6 +29,6 @@ void Logger::log(const std::string& msg)
         break;
     }
 
-    std::cout << "[" << Timestamp::now().toString()
-        << "]:" << msg << std::endl;
+    std::cout << "[" << Timestamp::now().toString() << "]["
+        << __FILE__ << ":" << __LINE__ << "] " << msg << std::endl;
 }
