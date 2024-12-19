@@ -23,6 +23,7 @@ Channel::~Channel()
 }
 
 //! tie方法什么时候被调用？
+//* 在TcpConnection::connectEstablished()方法中，调用channel_->tie(shared_from_this());
 void Channel::tie(const std::shared_ptr<void>& obj)
 {
     tie_ = obj;
@@ -47,7 +48,7 @@ void Channel::handleEvent(Timestamp receiveTime)
         auto guard = tie_.lock();
         if (guard) {
             handleEventWithGuard(receiveTime);
-        }
+        } //! 如果指针提升失败，说明TcpConnection对象已经析构，不再处理事件
     } else {
         handleEventWithGuard(receiveTime);
     }

@@ -15,7 +15,7 @@ public:
     using ThreadInitCallback = std::function<void(EventLoop*)>;
 
     explicit EventLoopThread(const ThreadInitCallback& cb = ThreadInitCallback(),
-        const std::string&& name = std::string());
+        const std::string& name = std::string());
     ~EventLoopThread();
 
     EventLoop* startLoop();

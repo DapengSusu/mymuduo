@@ -1,10 +1,10 @@
 #include "eventloopthread.h"
 #include "eventloop.h"
 
-EventLoopThread::EventLoopThread(const ThreadInitCallback& cb, const std::string&& name)
+EventLoopThread::EventLoopThread(const ThreadInitCallback& cb, const std::string& name)
     : loop_(nullptr)
     , exiting_(false)
-    , thread_(std::bind(&EventLoopThread::threadFunc, this), std::move(name))
+    , thread_(std::bind(&EventLoopThread::threadFunc, this), name)
     , mutex_()
     , cond_()
     , callback_(cb)

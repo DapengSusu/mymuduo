@@ -1,5 +1,5 @@
-#include "acceptor.h"
 #include "inetaddress.h"
+#include "acceptor.h"
 #include "logger.h"
 
 #include <netinet/in.h>
@@ -20,7 +20,7 @@ static int createNonblocking()
 Acceptor::Acceptor(EventLoop* loop, const InetAddress& listenaddr, bool reuseport)
     : loop_(loop)
     , acceptSocket_(createNonblocking())
-    , acceptChannel_(loop, acceptSocket_.fd())
+    , acceptChannel_(loop_, acceptSocket_.fd())
     , listening_(false)
 {
     acceptSocket_.setReuseAddr(true);

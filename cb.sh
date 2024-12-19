@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [ ! -d "build"  ]; then
-    mkdir build
+if [ -d "build"  ]; then
+    rm -rf build
+    echo "Deleted 'build' directory."
 fi
 
-cd build && cmake .. && cmake --build .
-
+mkdir build && cd build && cmake .. && cmake --build .
