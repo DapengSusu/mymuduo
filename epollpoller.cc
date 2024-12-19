@@ -43,7 +43,7 @@ Timestamp EPollPoller::poll(int timeoutMs, EPollPoller::ChannelList* activeChann
     if (numEvents > 0) {
         LOG_INFO("%d events happened", numEvents);
         fillActiveChannels(numEvents, activeChannels);
-        if (numEvents == events_.size()) {
+        if (numEvents == static_cast<int>(events_.size())) {
             events_.resize(events_.size() * 2);
         }
     } else if (numEvents == 0) {
