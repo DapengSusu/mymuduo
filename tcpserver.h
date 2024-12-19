@@ -43,6 +43,7 @@ public:
     void start();
 
 private:
+    // 有一个新客户端连接，acceptor会执行这个回调
     void newConnection(int sockfd, const InetAddress& peerAddr);
     void removeConnection(const TcpConnectionPtr& conn);
     void removeConnectionInLoop(const TcpConnectionPtr& conn);
@@ -66,5 +67,5 @@ private:
     std::atomic_int started_;
 
     int nextConnId_;
-    ConnectionMap connections_; // 保存所有的连接
+    ConnectionMap connections_; // 保存所有的连接 <连接名name, 连接对象tcpconnection>
 };

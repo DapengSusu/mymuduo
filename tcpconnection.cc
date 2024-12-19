@@ -36,15 +36,15 @@ TcpConnection::TcpConnection(EventLoop* loop, const std::string& name,
     channel_->setCloseCallback(std::bind(&TcpConnection::handleClose, this));
     channel_->setErrorCallback(std::bind(&TcpConnection::handleError, this));
 
-    LOG_INFO("%s => TcpConnection::ctor[%s] at fd:%d", __FUNCTION__, name_.c_str(), sockfd);
+    LOG_INFO("TcpConnection::ctor[%s] at fd:%d", name_.c_str(), sockfd);
 
     socket_->setKeepAlive(true);
 }
 
 TcpConnection::~TcpConnection()
 {
-    LOG_INFO("%s => TcpConnection::dtor[%s] at fd:%d state:%d",
-        __FUNCTION__, name_.c_str(), channel_->fd(), state_.load());
+    LOG_INFO("TcpConnection::dtor[%s] at fd:%d state:%d",
+        name_.c_str(), channel_->fd(), state_.load());
 }
 
 void TcpConnection::send(const std::string& buf)
@@ -81,7 +81,7 @@ void TcpConnection::sendInLoop(const void* data, size_t len)
         } else { // nwrote < 0
             nwrote = 0;
             if (errno != EWOULDBLOCK) {
-                LOG_ERROR("%s => TcpConnection::sendInLoop failed!", __FUNCTION__);
+                LOG_ERROR("TcpConnection::sendInLoop failed!");
                 if (errno == EPIPE || errno == ECONNRESET) {
                     faultError = true;
                 }
@@ -158,7 +158,7 @@ void TcpConnection::handleRead(Timestamp receiveTime)
         handleClose();
     } else {
         errno = savedErrno;
-        LOG_ERROR("%s => TcpConnection::handleRead", __FUNCTION__);
+        LOG_ERROR("TcpConnection::handleRead failed!");
         handleError();
     }
 }
@@ -181,7 +181,7 @@ void TcpConnection::handleWrite()
                 }
             }
         } else {
-            LOG_ERROR("%s => TcpConnection::handleWrite", __FUNCTION__);
+            LOG_ERROR("TcpConnection::handleWrite failed!");
         }
     } else {
         LOG_ERROR("%s => TcpConnection fd:%d is down, no more writing", __FUNCTION__, channel_->fd());
@@ -195,12 +195,12 @@ void TcpConnection::handleClose()
     setState(kDisconnected);
     channel_->disableAll();
 
-    auto guardThis(shared_from_this());
+    auto conn(shared_from_this());
     if (connectionCallback_) {
-        connectionCallback_(guardThis);
+        connectionCallback_(conn);
     }
     if (closeCallback_) {
-        closeCallback_(guardThis);
+        closeCallback_(conn); // 执行的是TcpServer::removeConnection回调
     }
 }
 
@@ -215,5 +215,5 @@ void TcpConnection::handleError()
         err = optval;
     }
 
-    LOG_ERROR("%s => TcpConnection::handleError name:%s - SO_ERROR:%d", __FUNCTION__, name_.c_str(), err);
+    LOG_ERROR("TcpConnection::handleError name:%s - SO_ERROR:%d", name_.c_str(), err);
 }

@@ -16,12 +16,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fPIC")
 # Debug or Release
 set(CMAKE_BUILD_TYPE "Debug")
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
-    message("CMAKE_BUILD_TYPE:Release")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 else()
-    message("CMAKE_BUILD_TYPE:Debug")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O0 -g")
 endif()
+message("-- CMAKE_BUILD_TYPE:${CMAKE_BUILD_TYPE}")
 
 # 指定参与编译的源文件
 aux_source_directory(. SRC_LIST)
