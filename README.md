@@ -23,7 +23,18 @@ To build MyMuduo, follow these steps:
 ```sh
 git clone https://github.com/yourusername/mymuduo.git
 cd mymuduo
-bash autobuild.sh
+
+# 编译源码并拷贝库到系统中
+# 默认头文件路径：/usr/include/mymuduo
+# 默认库路径：/usr/lib
+sudo ./autobuild.sh
+
+# 手动编译测试服务器
+cd example && make
+./testserver
+
+# 快速编译修改启动测试服务器（必须执行过cmake）
+sudo ./quicktest.sh
 ```
 
 ### Usage

@@ -7,11 +7,11 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 
 # 配置编译，使用c++11标准
 # -fPIC：编译器编译时启用位置无关代码的特性，建议在编译动态链接库时始终使用-fPIC编译参数
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fPIC")
-# # 设置C编译器为clang
-# set(CMAKE_C_COMPILER "clang")
-# # 设置C++编译器为clang++
-# set(CMAKE_CXX_COMPILER "clang++")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11 -fPIC")
+# 设置C编译器
+set(CMAKE_C_COMPILER "gcc")
+# 设置C++编译器
+set(CMAKE_CXX_COMPILER "g++")
 
 # Debug or Release
 set(CMAKE_BUILD_TYPE "Debug")

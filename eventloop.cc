@@ -59,7 +59,7 @@ void EventLoop::loop()
 {
     looping_ = true;
     quit_ = false;
-    LOG_INFO("EventLoop %p start looping", this);
+    LOG_INFO("%s => EventLoop %p start looping", __FUNCTION__, this);
 
     for(; !quit_; ) {
         activeChannels_.clear();
@@ -110,17 +110,17 @@ void EventLoop::queueInLoop(Functor cb)
     }
 }
 
-inline void EventLoop::updateChannel(Channel* channel)
+void EventLoop::updateChannel(Channel* channel)
 {
     poller_->updateChannel(channel);
 }
 
-inline void EventLoop::removeChannel(Channel* channel)
+void EventLoop::removeChannel(Channel* channel)
 {
     poller_->removeChannel(channel);
 }
 
-inline bool EventLoop::hasChannel(Channel* channel) const
+bool EventLoop::hasChannel(Channel* channel) const
 {
     return poller_->hasChannel(channel);
 }

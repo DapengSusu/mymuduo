@@ -29,7 +29,7 @@ EventLoop* EventLoopThread::startLoop()
     EventLoop* loop = nullptr;
     {
         std::unique_lock<std::mutex> lock(mutex_);
-        for (; loop == nullptr; ) {
+        for (; loop_ == nullptr; ) {
             cond_.wait(lock);
         }
         loop = loop_;

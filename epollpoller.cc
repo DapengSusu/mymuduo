@@ -33,15 +33,15 @@ EPollPoller::~EPollPoller()
 Timestamp EPollPoller::poll(int timeoutMs, EPollPoller::ChannelList* activeChannels)
 {
     // 此函数中使用LOG_DEBUG输出更为合理
-    LOG_INFO("func:%s => fd total count:%lu", __FUNCTION__, channels_.size());
+    LOG_DEBUG("EPollPoller::poll fd total count:%lu", channels_.size());
 
-    int numEvents = ::epoll_wait(epollfd_, &*events_.begin(),
+    int numEvents = ::epoll_wait(epollfd_, events_.data(),
         static_cast<int>(events_.size()), timeoutMs);
     int saveErrno = errno;
     auto now(Timestamp::now());
 
     if (numEvents > 0) {
-        LOG_INFO("%d events happened", numEvents);
+        LOG_INFO("%s => %d events happened", __FUNCTION__, numEvents);
         fillActiveChannels(numEvents, activeChannels);
         if (numEvents == static_cast<int>(events_.size())) {
             events_.resize(events_.size() * 2);
@@ -62,7 +62,7 @@ Timestamp EPollPoller::poll(int timeoutMs, EPollPoller::ChannelList* activeChann
 void EPollPoller::updateChannel(Channel* channel)
 {
     const auto index = channel->index();
-    LOG_INFO("func:%s => fd=%d, events=%d, index=%d",
+    LOG_INFO("%s => fd=%d, events=%d, index=%d",
         __FUNCTION__, channel->fd(), channel->events(), index);
 
     if (index == kNew || index == kDeleted) {
@@ -88,8 +88,6 @@ void EPollPoller::removeChannel(Channel* channel)
     const auto fd = channel->fd();
     const auto index = channel->index();
 
-    LOG_INFO("func:%s => fd=%d", __FUNCTION__, channel->fd());
-
     channels_.erase(fd);
     if (index == kAdded) {
         update(EPOLL_CTL_DEL, channel);
@@ -110,14 +108,12 @@ void EPollPoller::fillActiveChannels(int numEvents, ChannelList* activeChannels)
 
 void EPollPoller::update(int operation, Channel* channel)
 {
-    const auto fd = channel->fd();
-    epoll_event event;
+    struct epoll_event event;
     memset(&event, 0, sizeof event);
     event.events = channel->events();
     event.data.ptr = channel;
-    event.data.fd = fd;
 
-    if (::epoll_ctl(epollfd_, operation, fd, &event) < 0) {
+    if (::epoll_ctl(epollfd_, operation, channel->fd(), &event) < 0) {
         if (operation == EPOLL_CTL_DEL) {
             LOG_ERROR("epoll_ctl del error:%d", errno);
         } else {

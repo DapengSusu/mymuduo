@@ -6,6 +6,8 @@
 #include "callbacks.h"
 #include "eventloop.h"
 #include "acceptor.h"
+#include "tcpconnection.h"
+#include "buffer.h"
 
 #include <unordered_map>
 #include <functional>

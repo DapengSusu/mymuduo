@@ -24,6 +24,7 @@ TcpServer::TcpServer(EventLoop* loop, const InetAddress& listenAddr,
     , threadPool_(std::make_shared<EventLoopThreadPool>(loop, name_))
     , connectionCallback_()
     , messageCallback_()
+    , started_(0)
     , nextConnId_(1)
 {
     // 当有新用户连接时，会执行TcpServer::newConnection回调
