@@ -109,7 +109,7 @@ void EPollPoller::fillActiveChannels(int numEvents, ChannelList* activeChannels)
 void EPollPoller::update(int operation, Channel* channel)
 {
     struct epoll_event event;
-    memset(&event, 0, sizeof event);
+    ::memset(&event, 0, sizeof event);
     event.events = channel->events();
     event.data.ptr = channel;
 

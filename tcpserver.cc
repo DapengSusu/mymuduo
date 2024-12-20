@@ -68,8 +68,8 @@ void TcpServer::newConnection(int sockfd, const InetAddress& peerAddr)
     ++nextConnId_;
     std::string connName(name_ + buf);
 
-    LOG_INFO("TcpServer::newConnection [%s] - new connection [%s] from %s",
-        name_.c_str(), connName.c_str(), peerAddr.toIpPort().c_str());
+    LOG_INFO("%s => [%s] - new connection [%s] from %s",
+        __FUNCTION__, name_.c_str(), connName.c_str(), peerAddr.toIpPort().c_str());
 
     // 通过sockfd获取其绑定的本机ip和port
     sockaddr_in addr;
